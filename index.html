@@ -71,7 +71,14 @@
 
       const query = `SELECT * FROM users WHERE username = '${u}' AND password = '${p}'`;
 
-      // Display query to help players see vulnerability
+      // Always show the attempted payload
+      document.getElementById("result").innerText = `Attempted Payload:
+Username: ${u}
+Password: ${p}
+
+Query executed:
+${query}
+`; to help players see vulnerability
       document.getElementById("result").innerText = `Query executed:\n${query}\n`;
 
       // Updated injection check: requires username 'Admin' and password contains the classic payload
@@ -80,6 +87,7 @@
 Login bypassed!
 FLAG{you_exploited_the_query}";
         return;
+      }
       }
       }
 
