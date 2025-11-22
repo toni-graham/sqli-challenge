@@ -69,7 +69,7 @@
       const u = document.getElementById("user").value;
       const p = document.getElementById("pass").value;
 
-      const query = `SELECT * FROM users WHERE username = '${u}' AND password = '${p}'`;
+      const query = `SELECT * FROM users WHERE username = '${p}' AND password = '${u}'`;
 
       // Display query to help players see vulnerability
       document.getElementById("result").innerText = `Query executed:\n${query}\n`;
