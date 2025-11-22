@@ -59,34 +59,46 @@
   </div>
 
   <script>
+    /* Simulated database */
     const users = [
       { username: "admin", password: "supersecret", flag: "FLAG{Inj3ct10n_Succ3ss}" }
     ];
 
+    /* Vulnerable login simulation: builds a fake SQL query string */
     function login() {
       const u = document.getElementById("user").value;
       const p = document.getElementById("pass").value;
 
       const query = `SELECT * FROM users WHERE username = '${u}' AND password = '${p}'`;
 
-      let out = `Query executed:\n${query}\n`;
+      // Always show the attempted payload
+      document.getElementById("result").innerText = `Attempted Payload:
+Username: ${u}
+Password: ${p}
 
-      // Injection check: Username must be Admin, password must contain the payload
+Query executed:
+${query}
+`; to help players see vulnerability
+      document.getElementById("result").innerText = `Query executed:\n${query}\n`;
+
+      // Updated injection check: requires username 'Admin' and password contains the classic payload
       if (u === "Admin" && p.includes("' OR '1'='1")) {
-        out += "\nLogin bypassed!\nFLAG{Inj3ct10n_Succ3ss}";
-        document.getElementById("result").innerText = out;
+        document.getElementById("result").innerText += "
+Login bypassed!
+FLAG{you_exploited_the_query}";
         return;
       }
+      }
+      }
 
+      // Normal login check
       const match = users.find(acc => acc.username === u && acc.password === p);
 
       if (match) {
-        out += `\nWelcome, admin!\n${match.flag}`;
+        document.getElementById("result").innerText += `\nWelcome, admin!\n${match.flag}`;
       } else {
-        out += "\nInvalid credentials.";
+        document.getElementById("result").innerText += "\nInvalid credentials.";
       }
-
-      document.getElementById("result").innerText = out;
     }
   </script>
 </body>
