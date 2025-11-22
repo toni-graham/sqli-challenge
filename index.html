@@ -59,46 +59,37 @@
   </div>
 
   <script>
-    /* Simulated database */
+    /* Fake database */
     const users = [
       { username: "admin", password: "supersecret", flag: "FLAG{Inj3ct10n_Succ3ss}" }
     ];
 
-    /* Vulnerable login simulation: builds a fake SQL query string */
     function login() {
       const u = document.getElementById("user").value;
       const p = document.getElementById("pass").value;
 
       const query = `SELECT * FROM users WHERE username = '${u}' AND password = '${p}'`;
 
-      // Always show the attempted payload
-      document.getElementById("result").innerText = `Attempted Payload:
-Username: ${u}
-Password: ${p}
+      // Show attempted payload + query
+      let output = `Attempted Payload:\nUsername: ${u}\nPassword: ${p}\n\nQuery executed:\n${query}\n`;
 
-Query executed:
-${query}
-`; to help players see vulnerability
-      document.getElementById("result").innerText = `Query executed:\n${query}\n`;
-
-      // Updated injection check: requires username 'Admin' and password contains the classic payload
+      // Injection bypass condition
       if (u === "Admin" && p.includes("' OR '1'='1")) {
-        document.getElementById("result").innerText += "
-Login bypassed!
-FLAG{you_exploited_the_query}";
+        output += "\nLogin bypassed!\nFLAG{you_exploited_the_query}";
+        document.getElementById("result").innerText = output;
         return;
       }
-      }
-      }
 
-      // Normal login check
+      // Normal login
       const match = users.find(acc => acc.username === u && acc.password === p);
 
       if (match) {
-        document.getElementById("result").innerText += `\nWelcome, admin!\n${match.flag}`;
+        output += `\nWelcome, admin!\n${match.flag}`;
       } else {
-        document.getElementById("result").innerText += "\nInvalid credentials.";
+        output += "\nInvalid credentials.";
       }
+
+      document.getElementById("result").innerText = output;
     }
   </script>
 </body>
