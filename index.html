@@ -74,10 +74,13 @@
       // Display query to help players see vulnerability
       document.getElementById("result").innerText = `Query executed:\n${query}\n`;
 
-      // Naive parser: checks if attacker uses ' OR '1'='1 style payload
-      if (u.includes("'")) {
-        document.getElementById("result").innerText += "\nLogin bypassed!\nFLAG{Inj3ct10n_Succ3ss}";
+      // Updated injection check: requires username 'Admin' and password contains the classic payload
+      if (u === "Admin" && p.includes("' OR '1'='1")) {
+        document.getElementById("result").innerText += "
+Login bypassed!
+FLAG{you_exploited_the_query}";
         return;
+      }
       }
 
       // Normal login check
