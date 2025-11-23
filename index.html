@@ -64,31 +64,20 @@
       { username: "admin", password: "supersecret", flag: "FLAG{Inj3ct10n_Succ3ss}" }
     ];
 
-    /* Vulnerable login simulation: builds a fake SQL query string */
     function login() {
       const u = document.getElementById("user").value;
       const p = document.getElementById("pass").value;
 
       const query = `SELECT * FROM users WHERE username = '${u}' AND password = '${p}'`;
 
-      // Always show the attempted payload
-      document.getElementById("result").innerText = `Attempted Payload:
-Username: ${u}
-Password: ${p}
-
-Query executed:
-${query}
-`; to help players see vulnerability
+      // Show query
       document.getElementById("result").innerText = `Query executed:\n${query}\n`;
 
-      // Updated injection check: requires username 'Admin' and password contains the classic payload
+      /* SQL Injection Bypass */
       if (u === "Admin" && p.includes("' OR '1'='1")) {
-        document.getElementById("result").innerText += "
-Login bypassed!
-FLAG{you_exploited_the_query}";
+        document.getElementById("result").innerText +=
+          "\nLogin bypassed!\nFLAG{Inj3ct10n_Succ3ss}";
         return;
-      }
-      }
       }
 
       // Normal login check
