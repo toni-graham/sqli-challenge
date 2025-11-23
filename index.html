@@ -59,7 +59,7 @@
   </div>
 
   <script>
-    /* Simulated database */
+    // Fake database
     const users = [
       { username: "admin", password: "supersecret", flag: "FLAG{Inj3ct10n_Succ3ss}" }
     ];
@@ -70,24 +70,25 @@
 
       const query = `SELECT * FROM users WHERE username = '${u}' AND password = '${p}'`;
 
-      // Show query
-      document.getElementById("result").innerText = `Query executed:\n${query}\n`;
+      let output = `Query executed:\n${query}\n`;
 
-      /* SQL Injection Bypass */
-      if (u === "Admin" && p.includes("' OR '1'='1")) {
-        document.getElementById("result").innerText +=
-          "\nLogin bypassed!\nFLAG{Inj3ct10n_Succ3ss}";
+      // SQL injection bypass condition
+      if (u === "admin" && p.includes("' OR '1'='1")) {
+        output += "\nLogin bypassed!\nFLAG{Inj3ct10n_Succ3ss}";
+        document.getElementById("result").innerText = output;
         return;
       }
 
-      // Normal login check
+      // Normal login path
       const match = users.find(acc => acc.username === u && acc.password === p);
 
       if (match) {
-        document.getElementById("result").innerText += `\nWelcome, admin!\n${match.flag}`;
+        output += `\nWelcome, admin!\n${match.flag}`;
       } else {
-        document.getElementById("result").innerText += "\nInvalid credentials.";
+        output += "\nInvalid credentials.";
       }
+
+      document.getElementById("result").innerText = output;
     }
   </script>
 </body>
